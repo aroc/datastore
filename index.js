@@ -36,7 +36,7 @@ Emitter(Store.prototype);
 
 /**
  * Set store attribute.
- * 
+ *
  * Examples:
  *
  *   //set
@@ -45,7 +45,7 @@ Emitter(Store.prototype);
  *   .set({
  *     name: 'bredele'
  *   });
- *   
+ *
  * @param {String} name
  * @param {Everything} value
  * @api public
@@ -64,7 +64,7 @@ Store.prototype.set = many(function(name, value, strict) {
 
 /**
  * Get store attribute.
- * 
+ *
  * @param {String} name
  * @return {this}
  * @api public
@@ -76,12 +76,15 @@ Store.prototype.get = function(name) {
   if(formatter) {
     value = formatter[0].call(formatter[1], value);
   }
+  if(typeof value === 'function') {
+    value = value.call(this);
+  }
   return value;
 };
 
 /**
  * Get store attribute.
- * 
+ *
  * @param {String} name
  * @return {Boolean}
  * @api public
@@ -94,7 +97,7 @@ Store.prototype.has = function(name) {
 
 /**
  * Delete store attribute.
- * 
+ *
  * @param {String} name
  * @return {this}
  * @api public
@@ -118,16 +121,16 @@ Store.prototype.del = function(name, strict) {
 
 /**
  * Set format middleware.
- * 
+ *
  * Call formatter everytime a getter is called.
  * A formatter should always return a value.
- * 
+ *
  * Examples:
  *
  *   .format('name', function(val) {
  *     return val.toUpperCase();
  *   });
- *   
+ *
  * @param {String} name
  * @param {Function} callback
  * @param {Object} scope
@@ -143,16 +146,16 @@ Store.prototype.format = function(name, callback, scope) {
 
 /**
  * Compute store attributes.
- * 
+ *
  * Examples:
  *
  *   .compute('name', function() {
  *     return this.firstName + ' ' + this.lastName;
  *   });
- *   
+ *
  * @param  {String} name
  * @param  {Function} callback
- * @return {this}                
+ * @return {this}
  * @api public
  */
 
@@ -172,9 +175,9 @@ Store.prototype.compute = function(name, callback) {
 
 /**
  * Reset store
- * 
- * @param  {Object} data 
- * @return {this} 
+ *
+ * @param  {Object} data
+ * @return {this}
  * @api public
  */
 
@@ -207,10 +210,10 @@ Store.prototype.reset = function(data, strict) {
 
 /**
  * Loop through store data.
- * 
- * @param  {Function} cb   
- * @param  {Object}   scope 
- * @return {this} 
+ *
+ * @param  {Function} cb
+ * @param  {Object}   scope
+ * @return {this}
  * @api public
  */
 
@@ -225,11 +228,11 @@ Store.prototype.loop = function(cb, scope) {
  * example:
  *
  *   .pipe(store);
- *   
+ *
  * note: pipe only stores of same type
  *
- * @param {Store} store 
- * @return {this} 
+ * @param {Store} store
+ * @return {this}
  * @api public
  */
 
@@ -245,15 +248,15 @@ Store.prototype.pipe = function(store) {
 
 /**
  * Use middlewares to extend store.
- * 
+ *
  * A middleware is a function with the store
  * as first argument.
  *
  * Examples:
  *
  *   store.use(plugin, 'something');
- * 
- * @param  {Function} fn 
+ *
+ * @param  {Function} fn
  * @return {this}
  * @api public
  */
